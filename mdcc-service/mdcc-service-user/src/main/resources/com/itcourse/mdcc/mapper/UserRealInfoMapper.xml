@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itcourse.mdcc.mapper.UserRealInfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.itcourse.mdcc.domain.UserRealInfo">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="user_id" property="userId" />
+        <result column="real_name" property="realName" />
+        <result column="id_card_no" property="idCardNo" />
+        <result column="id_card_front" property="idCardFront" />
+        <result column="id_card_back" property="idCardBack" />
+        <result column="id_card_hand" property="idCardHand" />
+        <result column="state" property="state" />
+        <result column="apply_time" property="applyTime" />
+        <result column="audit_time" property="auditTime" />
+        <result column="audit_user" property="auditUser" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+</mapper>
