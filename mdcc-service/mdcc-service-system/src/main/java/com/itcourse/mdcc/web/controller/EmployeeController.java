@@ -9,6 +9,8 @@ import com.baomidou.mybatisplus.plugins.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
@@ -20,7 +22,7 @@ public class EmployeeController {
     * 保存和修改公用的
     */
     @RequestMapping(value="/save",method= RequestMethod.POST)
-    public JSONResult saveOrUpdate(@RequestBody Employee employee){
+    public JSONResult saveOrUpdate(@RequestBody @Valid Employee employee){
         if(employee.getId()!=null){
             employeeService.updateById(employee);
         }else{

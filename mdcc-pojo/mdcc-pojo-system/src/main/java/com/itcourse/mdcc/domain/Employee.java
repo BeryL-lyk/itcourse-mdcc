@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+
+import javax.validation.constraints.Email;
 import java.io.Serializable;
 
 /**
@@ -35,6 +37,7 @@ public class Employee extends Model<Employee> {
     /**
      * 邮箱
      */
+    @Email(message = "邮箱格式不正确")
     private String email;
     /**
      * 创建时间
