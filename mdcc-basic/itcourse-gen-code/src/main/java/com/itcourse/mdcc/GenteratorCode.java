@@ -18,7 +18,7 @@ public class GenteratorCode {
 
     public static void main(String[] args) throws InterruptedException {
         //用来获取Mybatis-Plus.properties文件的配置信息
-        ResourceBundle rb = ResourceBundle.getBundle("mybatiesplus-config-system"); //不要加后缀
+        ResourceBundle rb = ResourceBundle.getBundle("mybatiesplus-config-uaa"); //不要加后缀
         AutoGenerator mpg = new AutoGenerator();
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
@@ -46,12 +46,15 @@ public class GenteratorCode {
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
 
         strategy.setInclude(new String[]{
-                "t_config",
-                "t_department",
-                "t_employee",
-                "t_operation_log",
-                "t_systemdictionary",
-                "t_systemdictionaryitem"
+                "oauth_client_details",
+                "oauth_code",
+                "t_login",
+                "t_login_log",
+                "t_login_role",
+                "t_menu",
+                "t_permission",
+                "t_role",
+                "t_role_permission"
         }); // 需要生成的表
 
         mpg.setStrategy(strategy);
