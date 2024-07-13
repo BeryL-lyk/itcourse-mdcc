@@ -1,0 +1,68 @@
+package ${package.Controller};
+
+import ${package.Service}.${table.serviceName};
+import ${package.Entity}.${entity};
+import com.itcourse.mdcc.query.${entity}Query;
+import com.itcourse.mdcc.result.JSONResult;
+import com.itcourse.mdcc.result.PageList;
+import com.baomidou.mybatisplus.plugins.Page;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/${table.entityPath}")
+public class ${entity}Controller {
+
+    @Autowired
+    public ${table.serviceName} ${table.entityPath}Service;
+
+    /**
+    * 保存和修改公用的
+    */
+    @RequestMapping(value="/save",method= RequestMethod.POST)
+    public JSONResult saveOrUpdate(@RequestBody ${entity} ${table.entityPath}){
+        if(${table.entityPath}.getId()!=null){
+            ${table.entityPath}Service.updateById(${table.entityPath});
+        }else{
+            ${table.entityPath}Service.insert(${table.entityPath});
+        }
+        return JSONResult.success();
+    }
+
+    /**
+    * 删除对象
+    */
+    @RequestMapping(value="/{id}",method=RequestMethod.DELETE)
+    public JSONResult delete(@PathVariable("id") Long id){
+        ${table.entityPath}Service.deleteById(id);
+        return JSONResult.success();
+    }
+
+    /**
+   * 获取对象
+   */
+    @RequestMapping(value = "/{id}",method = RequestMethod.GET)
+    public JSONResult get(@PathVariable("id")Long id){
+        return JSONResult.success(${table.entityPath}Service.selectById(id));
+    }
+
+
+    /**
+    * 查询所有对象
+    */
+    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    public JSONResult list(){
+        return JSONResult.success(${table.entityPath}Service.selectList(null));
+    }
+
+
+    /**
+    * 带条件分页查询数据
+    */
+    @RequestMapping(value = "/pagelist",method = RequestMethod.POST)
+    public JSONResult page(@RequestBody ${entity}Query query){
+        Page<${entity}> page = new Page<${entity}>(query.getPage(),query.getRows());
+        page = ${table.entityPath}Service.selectPage(page);
+        return JSONResult.success(new PageList<${entity}>(page.getTotal(),page.getRecords()));
+    }
+}
