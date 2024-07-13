@@ -13,7 +13,6 @@
         <module>mdcc-service</module>
         <module>mdcc-pojo</module>
         <module>mdcc-api</module>
-        <module>mdcc-ui</module>
     </modules>
 
     <properties>
