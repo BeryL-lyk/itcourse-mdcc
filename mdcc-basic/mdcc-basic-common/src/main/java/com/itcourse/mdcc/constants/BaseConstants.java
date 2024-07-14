@@ -8,6 +8,16 @@ public class BaseConstants {
     public static final SimpleDateFormat DATE_FORMAT_DD_HOURSE_MINI = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
 
+    public class Verify{
+        public static final String IMAGE_CODE = "verify:imageCode:";
+        public static final String SMS_CODE = "verify:smsCode:";
+        public static final int CODE_LENGTH = 4;
+        public static final int TIMEOUT = 60 * 10;
+        public static final int EXPIRE = 60 * 9;
+        public static final int WIDTH = 130;
+        public static final int HEIGHT = 35;
+    }
+
     public class Kill{
         // 秒杀状态:0待发布，1已发布，3秒杀结束
         public static final int STATUS_PUBLISH_WAIT = 0;
