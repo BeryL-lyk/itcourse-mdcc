@@ -8,7 +8,6 @@ import com.itcourse.mdcc.service.IVerifyCodeService;
 import com.itcourse.mdcc.utils.AssertUtil;
 import com.itcourse.mdcc.utils.StrUtils;
 import com.itcourse.mdcc.utils.VerifyCodeUtils;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -60,17 +59,16 @@ public class VerifyCodeServiceImpl implements IVerifyCodeService {
         String key = BaseConstants.Verify.SMS_CODE + smsCodeDto.getMobile();
         Boolean b = redisTemplate.opsForValue().setIfAbsent(key, smsCode, BaseConstants.Verify.TIMEOUT, TimeUnit.SECONDS);
         // 如果存在
-        if (Boolean.FALSE.equals(b)){
+        if (Boolean.FALSE.equals(b)) {
             // 获取剩余时间
             Long expire = redisTemplate.opsForValue().getOperations().getExpire(key, TimeUnit.SECONDS);
             // 如果剩余时间大于EXPIRE，说明距离上次发送没有超过一分钟
-            if (expire > BaseConstants.Verify.EXPIRE){
+            if (expire > BaseConstants.Verify.EXPIRE) {
                 throw new GlobalException("发送验证码过于频繁");
             }
             // 如果发送时间超过一分钟了，重新发送
             redisTemplate.opsForValue().set(key, smsCode, BaseConstants.Verify.TIMEOUT, TimeUnit.SECONDS);
         }
-
         //TODO 5.将验证码发送给用户
     }
 }

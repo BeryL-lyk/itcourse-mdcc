@@ -8,8 +8,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 //mapper接口扫描
 @MapperScan("com.itcourse.mdcc.mapper")
-//事务管理
-@EnableTransactionManagement
 public class MybatisPlusConfig {
 
     /**
