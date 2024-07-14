@@ -8,12 +8,12 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 public class SmsCodeDto {
-    @NotBlank(message = "图形验证码不能为空")
+    @NotBlank(message = "图形验证码为空")
     private String imageCode;
 
-    @NotBlank(message = "图片验证码的key不能为空")
+    @NotBlank(message = "图片验证码的key为空")
     private String imageCodeKey;
 
-    @Length(max = 11, min = 11, message = "手机号格式不对")
+    @Length(max = 11, min = 11, message = "手机号格式错误")
     private String mobile;
 }

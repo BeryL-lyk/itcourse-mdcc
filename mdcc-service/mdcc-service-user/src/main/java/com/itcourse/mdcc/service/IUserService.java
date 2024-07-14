@@ -2,6 +2,7 @@ package com.itcourse.mdcc.service;
 
 import com.itcourse.mdcc.domain.User;
 import com.baomidou.mybatisplus.service.IService;
+import com.itcourse.mdcc.dto.UserRegisterDto;
 
 /**
  * <p>
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface IUserService extends IService<User> {
 
+    void register(UserRegisterDto userRegisterDto);
 }

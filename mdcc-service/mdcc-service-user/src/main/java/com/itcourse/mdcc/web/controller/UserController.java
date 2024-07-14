@@ -1,20 +1,33 @@
 package com.itcourse.mdcc.web.controller;
 
+import com.itcourse.mdcc.dto.UserRegisterDto;
 import com.itcourse.mdcc.service.IUserService;
 import com.itcourse.mdcc.domain.User;
 import com.itcourse.mdcc.query.UserQuery;
 import com.itcourse.mdcc.result.JSONResult;
 import com.itcourse.mdcc.result.PageList;
 import com.baomidou.mybatisplus.plugins.Page;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
+@Api("用户控制器")
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
     @Autowired
     public IUserService userService;
+
+    @ApiOperation("注册接口")
+    @PostMapping("/register")
+    public JSONResult register(@RequestBody @Valid UserRegisterDto userRegisterDto) {
+        userService.register(userRegisterDto);
+        return JSONResult.success();
+    }
 
     /**
     * 保存和修改公用的

@@ -29,7 +29,7 @@ public class VerifyCodeController {
 
     @ApiOperation("短信验证码")
     @PostMapping("/sendSmsCode")
-    public JSONResult sendSmsCode(@RequestBody SmsCodeDto smsCodeDto){
+    public JSONResult sendSmsCode(@RequestBody @Valid SmsCodeDto smsCodeDto){
         verifyCodeService.sendSmsCode(smsCodeDto);
         return JSONResult.success();
     }

@@ -26,7 +26,7 @@ public class LoginController {
         }else{
             loginService.insert(login);
         }
-        return JSONResult.success();
+        return JSONResult.success(login.getId());
     }
 
     /**
