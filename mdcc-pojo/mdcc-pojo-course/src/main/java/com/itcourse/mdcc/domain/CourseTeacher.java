@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.AllArgsConstructor;
+
 import java.io.Serializable;
 
 /**
@@ -16,6 +18,7 @@ import java.io.Serializable;
  * @since 2024-07-15
  */
 @TableName("t_course_teacher")
+@AllArgsConstructor
 public class CourseTeacher extends Model<CourseTeacher> {
 
     private static final long serialVersionUID = 1L;

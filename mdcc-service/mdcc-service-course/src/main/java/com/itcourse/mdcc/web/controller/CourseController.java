@@ -1,5 +1,6 @@
 package com.itcourse.mdcc.web.controller;
 
+import com.itcourse.mdcc.dto.CourseAddDto;
 import com.itcourse.mdcc.service.ICourseService;
 import com.itcourse.mdcc.domain.Course;
 import com.itcourse.mdcc.query.CourseQuery;
@@ -20,12 +21,8 @@ public class CourseController {
     * 保存和修改公用的
     */
     @RequestMapping(value="/save",method= RequestMethod.POST)
-    public JSONResult saveOrUpdate(@RequestBody Course course){
-        if(course.getId()!=null){
-            courseService.updateById(course);
-        }else{
-            courseService.insert(course);
-        }
+    public JSONResult save(@RequestBody CourseAddDto dto){
+        courseService.save(dto);
         return JSONResult.success();
     }
 
