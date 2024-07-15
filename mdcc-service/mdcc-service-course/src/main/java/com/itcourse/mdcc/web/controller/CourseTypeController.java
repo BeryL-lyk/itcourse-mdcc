@@ -6,11 +6,16 @@ import com.itcourse.mdcc.query.CourseTypeQuery;
 import com.itcourse.mdcc.result.JSONResult;
 import com.itcourse.mdcc.result.PageList;
 import com.baomidou.mybatisplus.plugins.Page;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/courseType")
+@Api("课程管理接口")
 public class CourseTypeController {
 
     @Autowired
@@ -64,5 +69,11 @@ public class CourseTypeController {
         Page<CourseType> page = new Page<CourseType>(query.getPage(),query.getRows());
         page = courseTypeService.selectPage(page);
         return JSONResult.success(new PageList<CourseType>(page.getTotal(),page.getRecords()));
+    }
+
+    @ApiOperation("课程分类树")
+    @GetMapping("/treeData")
+    public JSONResult treeData(){
+        return JSONResult.success(courseTypeService.getTreeData());
     }
 }

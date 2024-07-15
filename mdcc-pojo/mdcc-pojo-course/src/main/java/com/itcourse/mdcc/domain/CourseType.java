@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -54,6 +56,12 @@ public class CourseType extends Model<CourseType> {
     @TableField("total_count")
     private Integer totalCount;
 
+    @TableField(exist = false)
+    private List<CourseType> children = new ArrayList<CourseType>();
+
+    public List<CourseType> getChildren() {
+        return children;
+    }
 
     public Long getId() {
         return id;

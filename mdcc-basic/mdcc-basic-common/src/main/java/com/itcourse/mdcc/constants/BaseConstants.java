@@ -153,4 +153,8 @@ public class BaseConstants {
         public static final int STATUS_OFF_LIINE = 0 ;
         public static final int STATUS_ON_LIINE = 1 ;
     }
+
+    public class Course{
+        public static final String COURSE_TYPE = "course::type";
+    }
 }
