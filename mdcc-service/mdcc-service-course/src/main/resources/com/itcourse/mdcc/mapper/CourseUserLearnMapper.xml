@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itcourse.mdcc.mapper.CourseUserLearnMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.itcourse.mdcc.domain.CourseUserLearn">
+        <id column="id" property="id" />
+        <result column="login_id" property="loginId" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="state" property="state" />
+        <result column="course_id" property="courseId" />
+        <result column="course_order_no" property="courseOrderNo" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+</mapper>
