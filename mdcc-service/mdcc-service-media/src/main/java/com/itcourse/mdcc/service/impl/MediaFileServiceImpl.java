@@ -1,10 +1,14 @@
 package com.itcourse.mdcc.service.impl;
 
 import com.itcourse.mdcc.domain.MediaFile;
+import com.itcourse.mdcc.domain.MediaFileProcess_m3u8;
 import com.itcourse.mdcc.mapper.MediaFileMapper;
+import com.itcourse.mdcc.mq.MediaProducer;
 import com.itcourse.mdcc.result.JSONResult;
 import com.itcourse.mdcc.service.IMediaFileService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.itcourse.mdcc.utils.HlsVideoUtil;
+import com.itcourse.mdcc.utils.Mp4VideoUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
@@ -29,8 +33,8 @@ import java.util.*;
 @Service
 public class MediaFileServiceImpl extends ServiceImpl<MediaFileMapper, MediaFile> implements IMediaFileService {
 
-    /*@Autowired
-    private MediaProducer mediaProducer;*/
+    @Autowired
+    private MediaProducer mediaProducer;
 
     @Autowired
     private MediaFileMapper mediaFileMapper;
@@ -240,10 +244,108 @@ public class MediaFileServiceImpl extends ServiceImpl<MediaFileMapper, MediaFile
         mediaFileMapper.insert(mediaFile);
 
         // 文件上传到视频服务器做 断点续播 推送
-        /*boolean success = mediaProducer.synSend(mediaFile);
+        boolean success = mediaProducer.synSend(mediaFile);
 
         log.info("合并文件耗时 {}", System.currentTimeMillis() - startTime);
-        return success ? JSONResult.success() : JSONResult.error();*/
+        return success ? JSONResult.success() : JSONResult.error();
+    }
+
+    public JSONResult handleFile2m3u8Mp4(MediaFile mediaFile) {
+        mediaFile.setFileStatus(1);
+        //处理状态为未处理
+        mediaFileMapper.updateById(mediaFile);
+
+        //此地址为mp4的本地地址
+        String video_path = serverPath + mediaFile.getFilePath() + mediaFile.getFileName();
+
+        //初始化推流工具
+        HlsVideoUtil hlsVideoUtil = new HlsVideoUtil(ffmpeg_path);
+        hlsVideoUtil.init(srsRtmpPath, video_path, mediaFile.getFileId());
+        //推流到云端
+        String result = hlsVideoUtil.generateM3u8ToSrs();
+
+        if (result == null || !result.equals("success")) {
+            //操作失败写入处理日志
+            mediaFile.setFileStatus(3);
+            //处理状态为处理失败
+            MediaFileProcess_m3u8 mediaFileProcess_m3u8 = new MediaFileProcess_m3u8();
+            mediaFileProcess_m3u8.setErrorMsg(result);
+            mediaFile.setMediaFileProcess_m3u8(mediaFileProcess_m3u8);
+            mediaFileMapper.updateById(mediaFile);
+            return JSONResult.success();
+        }
+        //获取m3u8列表
+        //更新处理状态为成功
+        mediaFile.setFileStatus(2);
+        //m3u8文件url,播放使用 http://192.168.75.128:8080/live/23b52cc0e985544b0f240d5d2d8fed10.m3u8
+        mediaFile.setFileUrl(srsPalyPath + mediaFile.getFileId() + ".m3u8");
+        mediaFileMapper.updateById(mediaFile);
+        log.info("视频推流完成...");
+
+        return JSONResult.success();
+    }
+
+    /**
+     * 文件推流
+     **/
+    public JSONResult handleFile2m3u8(MediaFile mediaFile) {
+        String fileType = mediaFile.getFileType();
+        if (fileType == null) {
+            //目前只处理avi文件
+            mediaFile.setFileStatus(4);
+            //处理状态为无需处理
+            mediaFileMapper.updateById(mediaFile);
+            return JSONResult.success();
+        } else if ("mp4".equalsIgnoreCase(fileType)) {
+            return handleFile2m3u8Mp4(mediaFile);
+        } else {
+            mediaFile.setFileStatus(1);
+            //处理状态为未处理
+            mediaFileMapper.updateById(mediaFile);
+        }
+        //生成mp4
+        String video_path = serverPath + mediaFile.getFilePath() + mediaFile.getFileName();
+        String mp4_name = mediaFile.getFileId() + ".mp4";
+        String mp4folder_path = serverPath + mediaFile.getFilePath();
+
+        //视频编码，生成mp4文件
+        Mp4VideoUtil videoUtil = new Mp4VideoUtil(ffmpeg_path, video_path, mp4_name, mp4folder_path);
+
+        String result = videoUtil.generateMp4();
+        if (result == null || !result.equals("success")) {
+            //操作失败写入处理日志
+            mediaFile.setFileStatus(3);
+            mediaFileMapper.updateById(mediaFile);
+            return JSONResult.error("视频转换mp4失败");
+        }
+
+        //此地址为mp4的本地地址
+        video_path = serverPath + mediaFile.getFilePath() + mp4_name;
+
+        //初始化推流工具
+        HlsVideoUtil hlsVideoUtil = new HlsVideoUtil(ffmpeg_path);
+        hlsVideoUtil.init(srsRtmpPath, video_path, mediaFile.getFileId());
+        //推流到云端
+        result = hlsVideoUtil.generateM3u8ToSrs();
+
+        if (result == null || !result.equals("success")) {
+            //操作失败写入处理日志
+            mediaFile.setFileStatus(3);
+            //处理状态为处理失败
+            MediaFileProcess_m3u8 mediaFileProcess_m3u8 = new MediaFileProcess_m3u8();
+            mediaFileProcess_m3u8.setErrorMsg(result);
+            mediaFile.setMediaFileProcess_m3u8(mediaFileProcess_m3u8);
+            mediaFileMapper.updateById(mediaFile);
+            return JSONResult.success();
+        }
+        //获取m3u8列表
+        //更新处理状态为成功
+        mediaFile.setFileStatus(2);
+        //m3u8文件url,播放使用 http://192.168.75.128:8080/live/23b52cc0e985544b0f240d5d2d8fed10.m3u8
+        mediaFile.setFileUrl(srsPalyPath + mediaFile.getFileId() + ".m3u8");
+        mediaFileMapper.updateById(mediaFile);
+        log.info("视频推流完成...");
+
         return JSONResult.success();
     }
 
@@ -339,9 +441,8 @@ public class MediaFileServiceImpl extends ServiceImpl<MediaFileMapper, MediaFile
     }
 
     //校验文件的md5值
-    private boolean checkFileMd5(File mergeFile,String md5) {
-        if(mergeFile == null || StringUtils.isEmpty(md5))
-        {
+    private boolean checkFileMd5(File mergeFile, String md5) {
+        if (mergeFile == null || StringUtils.isEmpty(md5)) {
             return false;
         }
         //进行md5校验
@@ -351,21 +452,16 @@ public class MediaFileServiceImpl extends ServiceImpl<MediaFileMapper, MediaFile
             //得到文件的md5
             String mergeFileMd5 = DigestUtils.md5Hex(mergeFileInputstream);
             //比较md5
-            if(md5.equalsIgnoreCase(mergeFileMd5))
-            {
+            if (md5.equalsIgnoreCase(mergeFileMd5)) {
                 return true;
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
 
-        }
-        finally
-        {
+        } finally {
             try {
                 mergeFileInputstream.close();
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -373,8 +469,8 @@ public class MediaFileServiceImpl extends ServiceImpl<MediaFileMapper, MediaFile
     }
 
     //得到文件目录相对路径，路径中去掉根目录
-    private String getFileFolderRelativePath(String fileMd5 ,String fileExt) {
-        String filePath=fileMd5 .substring(0, 1) + "/" + fileMd5. substring(1, 2) + "/"+ fileMd5 + "/";
+    private String getFileFolderRelativePath(String fileMd5, String fileExt) {
+        String filePath = fileMd5.substring(0, 1) + "/" + fileMd5.substring(1, 2) + "/" + fileMd5 + "/";
         return filePath;
     }
 }

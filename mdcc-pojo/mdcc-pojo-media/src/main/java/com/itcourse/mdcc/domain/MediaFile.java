@@ -98,7 +98,17 @@ public class MediaFile extends Model<MediaFile> {
     @TableField("time_minute")
     private Integer timeMinute;
     private Boolean free;
+    //hls处理
+    @TableField(exist = false)
+    private MediaFileProcess_m3u8 mediaFileProcess_m3u8;
 
+    public MediaFileProcess_m3u8 getMediaFileProcess_m3u8() {
+        return mediaFileProcess_m3u8;
+    }
+
+    public void setMediaFileProcess_m3u8(MediaFileProcess_m3u8 mediaFileProcess_m3u8) {
+        this.mediaFileProcess_m3u8 = mediaFileProcess_m3u8;
+    }
 
     public Long getId() {
         return id;
