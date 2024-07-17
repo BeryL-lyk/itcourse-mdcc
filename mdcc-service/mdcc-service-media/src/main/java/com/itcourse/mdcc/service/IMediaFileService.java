@@ -15,4 +15,6 @@ import com.itcourse.mdcc.result.JSONResult;
 public interface IMediaFileService extends IService<MediaFile> {
 
     JSONResult register(String fileMd5, String fileName, Long fileSize, String mimetype, String fileExt);
+
+    JSONResult checkchunk(String fileMd5, Integer chunk, Integer chunkSize);
 }

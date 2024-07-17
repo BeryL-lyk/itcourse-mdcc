@@ -18,6 +18,19 @@ public class MediaFileController {
     @Autowired
     public IMediaFileService mediaFileService;
 
+    //校验文件块是否已经存在了
+    @PostMapping("/checkchunk")
+    public JSONResult checkchunk(
+            // 文件唯一标识
+            @RequestParam("fileMd5") String fileMd5,
+            // 当前分块下标
+            @RequestParam("chunk") Integer chunk,
+            // 当前分块大小
+            @RequestParam("chunkSize") Integer chunkSize){
+        log.info("文件上传-检查文件块是否存在；{}",fileMd5);
+        return mediaFileService.checkchunk(fileMd5,chunk,chunkSize);
+    }
+
     //文件注册，检查文件是否已经上传
     @PostMapping("/register")
     public JSONResult register(@RequestParam("fileMd5") String fileMd5,     // 文件唯一标识

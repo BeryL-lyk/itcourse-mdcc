@@ -32,6 +32,22 @@ public class MediaFileServiceImpl extends ServiceImpl<MediaFileMapper, MediaFile
     private MediaFileMapper mediaFileMapper;
 
     /**
+     * 校验文件块是否已经存在了
+     */
+    @Override
+    public JSONResult checkchunk(String fileMd5, Integer chunk, Integer chunkSize) {
+        //获取块文件文件夹路径
+        String chunkfileFolderPath = getChunkFileFolderPath(fileMd5);
+        //块文件的文件名称以1,2,3..序号命名，没有扩展名
+        File chunkFile = new File(chunkfileFolderPath+chunk);
+        if(!chunkFile.exists()){
+            return JSONResult.error();
+        }
+        return JSONResult.success();
+    }
+
+
+    /**
      * 文件上传之前的注册功能
      */
     @Override
@@ -86,5 +102,11 @@ public class MediaFileServiceImpl extends ServiceImpl<MediaFileMapper, MediaFile
     private String getFileFolderPath(String fileMd5) {
         String fileFolderPath = uploadPath + fileMd5.substring(0, 1) + "/" + fileMd5.substring(1, 2) + "/" + fileMd5 + "/";
         return fileFolderPath;
+    }
+
+    //得到块文件所在目录
+    private String getChunkFileFolderPath(String fileMd5) {
+        String fileChunkFolderPath = getFileFolderPath(fileMd5) +"/" + "chunks" + "/";
+        return fileChunkFolderPath;
     }
 }
