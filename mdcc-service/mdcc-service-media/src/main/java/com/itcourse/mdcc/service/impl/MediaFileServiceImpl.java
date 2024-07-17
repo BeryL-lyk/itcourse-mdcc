@@ -6,11 +6,20 @@ import com.itcourse.mdcc.result.JSONResult;
 import com.itcourse.mdcc.service.IMediaFileService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * <p>
@@ -74,6 +83,84 @@ public class MediaFileServiceImpl extends ServiceImpl<MediaFileMapper, MediaFile
         }
 
         return JSONResult.success();
+    }
+
+    /**
+     * 上传分片
+     * @param file
+     * @param fileMd5
+     * @param chunk
+     * @return
+     */
+    @Override
+    public JSONResult uploadchunk(MultipartFile file, String fileMd5, Integer chunk) {
+        if(file == null){
+            return JSONResult.error("上传文件不能为null");
+        }
+        // 创建块目录
+        createChunkFileFolder(fileMd5);
+        //块文件存放完整路径
+        File chunkfile = new File(getChunkFileFolderPath(fileMd5) + chunk);
+
+        //上传的块文件
+        InputStream inputStream= null;
+        FileOutputStream outputStream = null;
+        try {
+            inputStream = file.getInputStream();
+            outputStream = new FileOutputStream(chunkfile);
+            IOUtils.copy(inputStream,outputStream); }
+        catch (Exception e){
+            e.printStackTrace();
+            return JSONResult.error("文件上传失败！");
+        }finally {
+            try {
+                inputStream.close();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            try {
+                outputStream.close();
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        return JSONResult.success();
+    }
+
+    /**
+     * 创建块文件目录
+     */
+    private boolean createChunkFileFolder(String fileMd5){ //创建上传文件目录
+        String chunkFileFolderPath = getChunkFileFolderPath(fileMd5);
+        File chunkFileFolder = new File(chunkFileFolderPath);
+        if (!chunkFileFolder.exists()) {
+            //创建文件夹
+            boolean mkdirs = chunkFileFolder.mkdirs();
+            return mkdirs;
+        }
+        return true;
+    }
+
+    //获取所有块文件
+    private List<File> getChunkFiles(File chunkfileFolder) {
+        //获取路径下的所有块文件
+        File[] chunkFiles = chunkfileFolder.listFiles();
+        //将文件数组转成list，并排序
+        List<File> chunkFileList = new ArrayList<File>();
+        chunkFileList.addAll(Arrays.asList(chunkFiles));
+        //排序
+        Collections.sort(chunkFileList, (o1, o2) -> {
+            if(Integer.parseInt(o1.getName())>Integer.parseInt(o2.getName()))
+            {
+                return 1;
+            }
+            return -1;
+        });
+        return chunkFileList;
     }
 
     /*

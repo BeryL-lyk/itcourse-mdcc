@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.plugins.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -17,6 +18,20 @@ public class MediaFileController {
 
     @Autowired
     public IMediaFileService mediaFileService;
+
+    //上传分块后的文件
+    @PostMapping("/uploadchunk")
+    public JSONResult uploadchunk(
+            //分块后的文件
+            @RequestParam("file") MultipartFile file,
+            // 文件唯一标识
+            @RequestParam("fileMd5") String fileMd5,
+            // 第几块，分块的索引
+            @RequestParam("chunk") Integer chunk){
+
+        log.info("文件上传 fileName={},fileMd5={}",file.getOriginalFilename(),fileMd5);
+        return mediaFileService.uploadchunk(file,fileMd5,chunk);
+    }
 
     //校验文件块是否已经存在了
     @PostMapping("/checkchunk")
