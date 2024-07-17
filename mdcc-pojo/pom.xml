@@ -18,6 +18,7 @@
         <module>mdcc-pojo-common</module>
         <module>mdcc-pojo-course</module>
         <module>mdcc-pojo-media</module>
+        <module>mdcc-pojo-danmu</module>
     </modules>
 
     <properties>

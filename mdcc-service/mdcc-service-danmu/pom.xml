@@ -5,22 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.itcourse</groupId>
-        <artifactId>itcourse-mdcc</artifactId>
+        <artifactId>mdcc-service</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mdcc-service</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>mdcc-service-system</module>
-        <module>mdcc-service-uaa</module>
-        <module>mdcc-service-user</module>
-        <module>mdcc-service-gateway</module>
-        <module>mdcc-service-common</module>
-        <module>mdcc-service-course</module>
-        <module>mdcc-service-media</module>
-        <module>mdcc-service-danmu</module>
-    </modules>
+    <artifactId>mdcc-service-danmu</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
