@@ -3,6 +3,7 @@ package com.itcourse.mdcc.service;
 import com.itcourse.mdcc.domain.Course;
 import com.baomidou.mybatisplus.service.IService;
 import com.itcourse.mdcc.dto.CourseAddDto;
+import com.itcourse.mdcc.dto.CourseDetailDto;
 
 /**
  * <p>
@@ -15,4 +16,6 @@ import com.itcourse.mdcc.dto.CourseAddDto;
 public interface ICourseService extends IService<Course> {
 
     void save(CourseAddDto dto);
+
+    CourseDetailDto selectDetailData(Long id);
 }

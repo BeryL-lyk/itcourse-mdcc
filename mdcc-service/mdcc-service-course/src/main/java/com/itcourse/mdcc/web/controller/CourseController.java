@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.itcourse.mdcc.dto.CourseAddDto;
+import com.itcourse.mdcc.dto.CourseDetailDto;
 import com.itcourse.mdcc.service.ICourseService;
 import com.itcourse.mdcc.domain.Course;
 import com.itcourse.mdcc.query.CourseQuery;
@@ -20,6 +21,17 @@ public class CourseController {
 
     @Autowired
     public ICourseService courseService;
+
+
+    /**
+     * 课程详情
+     *
+     */
+    @GetMapping("/detail/data/{id}")
+    public JSONResult detail(@PathVariable("id") Long id) {
+        CourseDetailDto courseDetailDto = courseService.selectDetailData(id);
+        return JSONResult.success(courseDetailDto);
+    }
 
     /**
      * 保存和修改公用的

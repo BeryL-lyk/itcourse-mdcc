@@ -2,6 +2,9 @@ package com.itcourse.mdcc.mapper;
 
 import com.itcourse.mdcc.domain.Course;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.itcourse.mdcc.domain.Teacher;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface CourseMapper extends BaseMapper<Course> {
 
+    List<Teacher> selectByCourseId(Long courseId);
 }
