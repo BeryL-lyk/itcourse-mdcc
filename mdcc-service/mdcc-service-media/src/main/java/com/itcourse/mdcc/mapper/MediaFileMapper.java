@@ -2,6 +2,7 @@ package com.itcourse.mdcc.mapper;
 
 import com.itcourse.mdcc.domain.MediaFile;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface MediaFileMapper extends BaseMapper<MediaFile> {
 
+    int selectMaxNumberByChapterIdAndCourseId(@Param("courseChapterId") Long courseChapterId, @Param("courseId") Long courseId);
 }

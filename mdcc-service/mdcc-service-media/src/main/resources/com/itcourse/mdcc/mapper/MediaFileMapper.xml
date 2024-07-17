@@ -4,25 +4,31 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.itcourse.mdcc.domain.MediaFile">
-        <id column="id" property="id" />
-        <result column="file_id" property="fileId" />
-        <result column="file_name" property="fileName" />
-        <result column="file_original_name" property="fileOriginalName" />
-        <result column="file_url" property="fileUrl" />
-        <result column="file_path" property="filePath" />
-        <result column="file_type" property="fileType" />
-        <result column="file_status" property="fileStatus" />
-        <result column="file_size" property="fileSize" />
-        <result column="mime_type" property="mimeType" />
-        <result column="upload_time" property="uploadTime" />
-        <result column="chapter_id" property="chapterId" />
-        <result column="course_id" property="courseId" />
-        <result column="number" property="number" />
-        <result column="name" property="name" />
-        <result column="course_name" property="courseName" />
-        <result column="chapter_name" property="chapterName" />
-        <result column="time_minute" property="timeMinute" />
-        <result column="free" property="free" />
+        <id column="id" property="id"/>
+        <result column="file_id" property="fileId"/>
+        <result column="file_name" property="fileName"/>
+        <result column="file_original_name" property="fileOriginalName"/>
+        <result column="file_url" property="fileUrl"/>
+        <result column="file_path" property="filePath"/>
+        <result column="file_type" property="fileType"/>
+        <result column="file_status" property="fileStatus"/>
+        <result column="file_size" property="fileSize"/>
+        <result column="mime_type" property="mimeType"/>
+        <result column="upload_time" property="uploadTime"/>
+        <result column="chapter_id" property="chapterId"/>
+        <result column="course_id" property="courseId"/>
+        <result column="number" property="number"/>
+        <result column="name" property="name"/>
+        <result column="course_name" property="courseName"/>
+        <result column="chapter_name" property="chapterName"/>
+        <result column="time_minute" property="timeMinute"/>
+        <result column="free" property="free"/>
     </resultMap>
 
+    <select id="selectMaxNumberByChapterIdAndCourseId" resultType="int">
+        SELECT ifnull(max(number), 0)
+        FROM t_media_file
+        WHERE course_id = #{courseId}
+          and chapter_id = #{courseChapterId}
+    </select>
 </mapper>

@@ -20,4 +20,6 @@ public interface IMediaFileService extends IService<MediaFile> {
     JSONResult checkchunk(String fileMd5, Integer chunk, Integer chunkSize);
 
     JSONResult uploadchunk(MultipartFile file, String fileMd5, Integer chunk);
+
+    JSONResult mergechunks(String fileMd5, String fileName, Long fileSize, String mimetype, String fileExt, Long chapterId, Long courseId, Integer videoNumber, String name, String courseName, String chapterName);
 }

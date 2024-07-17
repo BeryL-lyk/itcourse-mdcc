@@ -19,6 +19,36 @@ public class MediaFileController {
     @Autowired
     public IMediaFileService mediaFileService;
 
+    //分块都上传成功之后，合并分块
+    @PostMapping("/mergechunks")
+    public JSONResult mergechunks(
+            // 课程章节ID
+            @RequestParam("chapterId") Long chapterId,
+            // 课程ID
+            @RequestParam("courseId") Long courseId,
+            // 课程序列号
+            @RequestParam("videoNumber") Integer videoNumber,
+            // 课程章节ID
+            @RequestParam("name") String name,
+            //章节名
+            @RequestParam("chapterName") String chapterName,
+            //课程名
+            @RequestParam("courseName") String courseName,
+            // 文件唯一标识
+            @RequestParam("fileMd5") String fileMd5,
+            // 源文件名
+            @RequestParam("fileName") String fileName,
+            // 文件总大小
+            @RequestParam("fileSize") Long fileSize,
+            // 文件的mimi类型
+            @RequestParam("mimetype") String mimetype,
+            // 文件扩展名
+            @RequestParam("fileExt") String fileExt){
+
+        log.info("合并文件 fileName={} ，fileMd5={} ",fileName,fileMd5);
+        return mediaFileService.mergechunks(fileMd5,fileName,fileSize,mimetype,fileExt,chapterId,courseId,videoNumber,name,courseName,chapterName);
+    }
+
     //上传分块后的文件
     @PostMapping("/uploadchunk")
     public JSONResult uploadchunk(
