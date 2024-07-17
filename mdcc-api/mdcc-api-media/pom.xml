@@ -5,16 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.itcourse</groupId>
-        <artifactId>itcourse-mdcc</artifactId>
+        <artifactId>mdcc-api</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mdcc-api</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>mdcc-api-uaa</module>
-        <module>mdcc-api-media</module>
-    </modules>
+    <artifactId>mdcc-api-media</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -24,14 +19,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.itcourse</groupId>
-            <artifactId>mdcc-basic-common</artifactId>
+            <artifactId>mdcc-pojo-media</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
-
 </project>
