@@ -1,0 +1,11 @@
+spring:
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848 #注册中心
+      config:
+        server-addr: localhost:8848 #配置中心
+        file-extension: yaml #配置文件格式
+        prefix: application-media-dev #配置前缀 ，默认使用sring.application.name

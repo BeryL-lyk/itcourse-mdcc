@@ -5,20 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.itcourse</groupId>
-        <artifactId>itcourse-mdcc</artifactId>
+        <artifactId>mdcc-service</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mdcc-pojo</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>mdcc-pojo-system</module>
-        <module>mdcc-pojo-uaa</module>
-        <module>mdcc-pojo-user</module>
-        <module>mdcc-pojo-common</module>
-        <module>mdcc-pojo-course</module>
-        <module>mdcc-pojo-media</module>
-    </modules>
+    <artifactId>mdcc-service-media</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -28,20 +19,14 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>2.2.0</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
+            <groupId>com.itcourse</groupId>
+            <artifactId>mdcc-pojo-media</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>com.itcourse</groupId>
-            <artifactId>mdcc-basic-common</artifactId>
+            <artifactId>mdcc-basic-dependency</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
