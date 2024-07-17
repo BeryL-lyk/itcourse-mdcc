@@ -1,5 +1,7 @@
 package com.itcourse.mdcc.web.controller;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.itcourse.mdcc.service.IMediaFileService;
 import com.itcourse.mdcc.domain.MediaFile;
 import com.itcourse.mdcc.query.MediaFileQuery;
@@ -11,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/mediaFile")
@@ -18,6 +22,31 @@ public class MediaFileController {
 
     @Autowired
     public IMediaFileService mediaFileService;
+
+    /**
+     * 根据课程id 获取视频列表
+     * @param courseId
+     * @return
+     */
+    @GetMapping("/getByCourseId/{courseId}")
+    public JSONResult list(@PathVariable("courseId") Long courseId){
+
+        Wrapper<MediaFile> wrapper = new EntityWrapper<>();
+        wrapper.eq("course_id",courseId);
+
+        List<MediaFile> mediaFiles = mediaFileService.selectList(wrapper);
+
+        return JSONResult.success(mediaFiles);
+    }
+
+    @GetMapping("/getForUser/{id}")
+    public JSONResult  getForUser(@PathVariable("id") Long id){
+
+        MediaFile mediaFile = mediaFileService.getForUser(id);
+
+        return JSONResult.success(mediaFile);
+
+    }
 
     //分块都上传成功之后，合并分块
     @PostMapping("/mergechunks")

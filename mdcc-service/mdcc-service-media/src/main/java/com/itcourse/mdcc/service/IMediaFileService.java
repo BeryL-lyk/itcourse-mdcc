@@ -24,4 +24,6 @@ public interface IMediaFileService extends IService<MediaFile> {
     JSONResult mergechunks(String fileMd5, String fileName, Long fileSize, String mimetype, String fileExt, Long chapterId, Long courseId, Integer videoNumber, String name, String courseName, String chapterName);
 
     JSONResult handleFile2m3u8(MediaFile mediaFile);
+
+    MediaFile getForUser(Long id);
 }

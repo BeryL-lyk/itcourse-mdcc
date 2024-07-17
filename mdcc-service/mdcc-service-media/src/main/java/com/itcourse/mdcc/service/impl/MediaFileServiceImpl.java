@@ -60,6 +60,12 @@ public class MediaFileServiceImpl extends ServiceImpl<MediaFileMapper, MediaFile
     String ffmpeg_path;
 
 
+    @Override
+    public MediaFile getForUser(Long id) {
+        MediaFile mediaFile = mediaFileMapper.selectById(id);
+        return mediaFile;
+    }
+
     /**
      * 校验文件块是否已经存在了
      */

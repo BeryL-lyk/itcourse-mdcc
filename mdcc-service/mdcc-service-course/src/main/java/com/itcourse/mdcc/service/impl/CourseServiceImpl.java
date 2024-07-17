@@ -60,7 +60,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 
         //查询课程
         Course course = baseMapper.selectById(courseId);
-        AssertUtil.isNotNull(course,"无效的课程");
+        AssertUtil.isNotNull(course, "无效的课程");
 //        AssertUtil.isEquals(course.getStatus(),Course.STATUS_ONLINE , "课程没有上线");
 
 
@@ -69,7 +69,6 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
 
         //查询教师
         List<Teacher> teachers = courseMapper.selectByCourseId(courseId);
-
 
 
         CourseMarket courseMarket = courseMarketMapper.selectById(courseId);
@@ -86,7 +85,8 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         return dto;
     }
 
-    /**-----------------------------------------------------------------
+    /**
+     * -----------------------------------------------------------------
      * Description： 保存课程
      * 1.判断参数
      * 2.判断重复
@@ -151,7 +151,7 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     private List<CourseChapter> getCourseChapterByCourseId(Long courseId) {
 
         Wrapper<CourseChapter> chapterQuery = new EntityWrapper<>();
-        chapterQuery.eq("course_id",courseId);
+        chapterQuery.eq("course_id", courseId);
         List<CourseChapter> courseChapters = courseChapterMapper.selectList(chapterQuery);
 
 
